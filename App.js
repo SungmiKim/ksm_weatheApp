@@ -1,18 +1,26 @@
 import { StatusBar } from "expo-status-bar";
-import { ScrollView, StyleSheet, Text, View, Dimensions, ActivityIndicator, TouchableOpacity, TouchableHighlight } from "react-native";
+import { useState } from "react";
+import { ScrollView, StyleSheet, Text, View, Dimensions, ActivityIndicator, TouchableOpacity, TouchableHighlight, TextInput } from "react-native";
 import { theme } from "./color";
 
 export default function App() {
+  const [working, setWorking] = useState(true);
+  const travel = () => setWorking(false);
+  const work = () => setWorking(true);
+
+  const [text, setText] = useState("");
+  const onChangeText = (prev) => setText(prev);
   return (
     <View style={styles.container}>
       <View style={styles.headers}>
-        <TouchableOpacity activeOpacity={0}>
-          <Text style={styles.btnText}>Work</Text>
+        <TouchableOpacity onPress={work}>
+          <Text style={{ ...styles.btnText, color: working ? "white" : theme.grey }}>Work</Text>
         </TouchableOpacity>
-        <TouchableHighlight underlayColor="red" activeOpacity={0} onPress={() => console.log("pressed")}>
-          <Text style={styles.btnText}>Trabel</Text>
-        </TouchableHighlight>
+        <TouchableOpacity onPress={travel}>
+          <Text style={{ ...styles.btnText, color: !working ? "white" : theme.grey }}>Travel</Text>
+        </TouchableOpacity>
       </View>
+      <TextInput style={styles.input} returnKeyType="done" placeholder={working ? "Add a Todo" : "Where to Travel"} onChangeText={onChangeText}></TextInput>
     </View>
   );
 }
@@ -32,5 +40,14 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 38,
     fontWeight: 600,
+  },
+  input: {
+    backgroundColor: "white",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    marginTop: 20,
+    fontSize: 18,
+    marginBottom: 15,
   },
 });
